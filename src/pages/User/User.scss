@@ -2,10 +2,6 @@
   box-sizing: border-box;
 }
 
-body {
-  //   background-color: #f0e2c1;
-}
-
 .user-container {
   padding: 10px;
   // background-color: lightgray;
@@ -77,8 +73,12 @@ body {
 
 .tableContainer {
   margin-top: 50px;
+  box-shadow: 5px 5px 10px rbga(0, 0, 0, 0.2);
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  //   background-color: red;
   & table {
-    border: 1px solid lightgray;
+    border-radius: 5px;
   }
   & table thead tr {
     background-color: lightgray;
@@ -107,4 +107,41 @@ body {
   // flex-direction: column;
   align-items: center;
   justify-content: space-between;
+}
+
+.btn-edit,
+.btn-delete {
+  font-size: 1rem;
+  padding: 5px 10px;
+  margin: 0px 10px;
+}
+
+.btn-edit {
+  background-color: royalblue;
+  color: white;
+}
+
+.btn-delete {
+  background-color: crimson;
+  color: white;
+}
+
+.no-med {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.5rem;
+  width: 100%;
+}
+
+select {
+  font-size: 18px;
+  padding: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: auto;
+}
+
+.interval {
+    display: flex;
+    flex-direction: column;
 }

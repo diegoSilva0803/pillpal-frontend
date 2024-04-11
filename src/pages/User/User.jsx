@@ -1,9 +1,10 @@
 import "./User.scss";
 // import MedForm from "../../components/MedForm/MedForm";
-import { IoIosClose } from "react-icons/io";
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import MedFormTable from "../../components/MedFormTable/MedFormTable";
 
 // axios.default.baseURL = "http://localhost:8080";
 
@@ -11,48 +12,112 @@ export default function User() {
   const [newSection, setNewSection] = useState(false);
   const [formData, setFormData] = useState({
     medName: "",
+    freq: 0,
     startDate: "",
     endDate: "",
+    dosageTimes: [],
+  });
+
+  const [editMedForm, setEditMedForm] = useState(false);
+  const [formDataEdit, setFormDataEdit] = useState({
+    medName: "",
+    freq: 0,
+    startDate: "",
+    endDate: "",
+    id: "",
   });
 
   const [dataList, setDataList] = useState([]);
 
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    // console.log("FormData updated:", formData);
+  }, [formData]);
+
+  //   const handleOnChange = (e) => {
+  //     const { value, name } = e.target;
+  //     setFormData((prev) => {
+  //       return {
+  //         ...prev,
+  //         [name]: value,
+  //       };
+  //     });
+  //   };
+
   const handleOnChange = (e) => {
     const { value, name } = e.target;
-    setFormData((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "endDate" ? value || "" : value, // Handle empty endDate
+    }));
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const data = await axios.post("/medication/create", formData);
-    console.log(data);
+    const { medName, freq, startDate, endDate = "" } = formData;
+    const data = await axios.post(
+      "http://localhost:8080/medication/create",
+      //   formData
+      { medName, freq, startDate, endDate }
+    );
+    getData();
+    setNewSection(false);
+    // setMedicationSavedAlertSection(true);
+    // console.log(data);
+  };
 
-    // Optionally, update dataList state with the new data after successful save
-    setDataList([...dataList, formData]);
-    // Clear the form after saving
+  const getData = async () => {
+    const response = await axios.get("http://localhost:8080/medication/create");
+    setDataList(response.data);
+  };
+
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8080/medication/delete/${id}`
+      );
+      //   console.log(response)
+      setDataList(dataList.filter((item) => item.id !== id));
+      alert(response.data.message);
+    } catch (error) {
+      console.error("Error deleting medication:", error);
+      alert("An error occurred. Please try again.");
+    }
+  };
+
+  const handleEdit = async (id) => {
+    const editItem = dataList.find((item) => item.id === id);
+    if (editItem) {
+      setFormDataEdit({ ...editItem });
+    } else {
+      // Handle case where medication is not found (e.g., alert message)
+    }
+    setEditMedForm(true);
+  };
   
-  };
 
-  const handleClearForm = () => {
-    // Clear the form input fields
-    setFormData({
-      medName: "",
-      startDate: "",
-      endDate: "",
-      freq: "",
-    });
-  };
+  const handleEditSave = async (e) => {
+    e.preventDefault();
+    const { medName, freq, startDate, endDate, id } = formDataEdit;
 
-  // const getData = async() => {
-  //   const data = await axios.get("/" );
-  //   console.log(data);
-  //   setDataList(data.data)
-  // }
+    // PUT request for updating medication
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/medication/update/${id}`,
+        { medName, freq, startDate, endDate }
+      );
+      getData(); // Fetch updated data after successful edit
+      setEditMedForm(false);
+      alert(response.data.message);
+    } catch (error) {
+      console.error("Error updating medication:", error);
+      alert("An error occurred. Please try again.");
+    }
+  };
 
   return (
     <div className="user-container">
@@ -61,60 +126,26 @@ export default function User() {
       </button>
 
       {newSection && (
-        <div className="addContainer">
-          <form onSubmit={handleSave}>
-            <div className="close-btn" onClick={() => setNewSection(false)}>
-              <IoIosClose />
-            </div>
-            <label htmlFor="med-name">Medication name: </label>
-            <input
-              type="text"
-              id="med-name"
-              name="medName"
-              placeholder="medication"
-              onChange={handleOnChange}
-            />
-            <label htmlFor="freq">Number of times per day: </label>
-            {/* take negative numbers out */}
-            <input
-              type="number"
-              id="freq"
-              name="frenq"
-              placeholder="number of times"
-            />
+        <MedFormTable
+          handleSave={handleSave}
+          handleOnChange={handleOnChange}
+          handleClose={() => setNewSection(false)}
+          formData={formData}
+        />
+      )}
 
-            <label htmlFor="startDate">Start Date: </label>
-            <input
-              type="date"
-              id="startDate"
-              name="startDate"
-              onChange={handleOnChange}
-            />
-
-            <label htmlFor="endDate">End Date: </label>
-            <input
-              type="date"
-              id="endDate"
-              name="endDate"
-              onChange={handleOnChange}
-            />
-            <div className="form-btn">
-              <Link to="/medication/create">
-                <button className="btn">Save</button>
-              </Link>
-              {/* Fix this */}
-              <button
-              className="btn"
-                onClick={() => {
-                  handleClearForm();
-                  setNewSection(false); // Close the form after clearing
-                }}
-              >
-                Add New
-              </button>
-            </div>
-          </form>
-        </div>
+      {editMedForm && (
+        <MedFormTable
+          handleSave={handleEditSave}
+          handleOnChange={(e) => {
+            setFormDataEdit({
+              ...formDataEdit,
+              [e.target.name]: e.target.value,
+            });
+          }} // Update onChange for edit form
+          handleClose={() => setEditMedForm(false)}
+          formData={formDataEdit} // Pass edit form data
+        />
       )}
 
       <div className="tableContainer">
@@ -126,20 +157,36 @@ export default function User() {
               <th>End Date</th>
               <th>Frequency</th>
               <th>Time left</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            {dataList.map((el) => {
-              return (
-                <tr>
-                  <td>{el.medName}</td>
-                  <td>{el.startDate}</td>
-                  <td>{el.endDate}</td>
-                  <td>{el.freq}</td>
-                </tr>
-              );
-            })}
-          </tbody>
+      {/* Conditionally render medication list and edit buttons */}
+      {dataList.length > 0 && (
+        dataList.map((el) => {
+          return (
+            <tr>
+              <td>{el.medName}</td>
+              <td>{el.startDate}</td>
+              <td>{el.endDate}</td>
+              <td>{el.freq}</td>
+              <td></td>
+              <td>
+                <button className="btn btn-edit" onClick={() => handleEdit(el.id)}>Edit</button>
+                <button
+                  className="btn btn-delete"
+                  onClick={() => handleDelete(el.id)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          );
+        })
+      )}
+      {/* Alternative message if no medication is found */}
+      {dataList.length === 0 && <p className="no-med">No Medication</p>}
+    </tbody>
         </table>
       </div>
     </div>
