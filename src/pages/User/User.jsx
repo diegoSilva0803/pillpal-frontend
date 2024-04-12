@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import MedFormTable from "../../components/MedFormTable/MedFormTable";
+import backgroundImg from "../../images/pillpal-bgImg.jpg";
 
 // axios.default.baseURL = "http://localhost:8080";
 
@@ -24,6 +25,7 @@ export default function User() {
     freq: 0,
     startDate: "",
     endDate: "",
+    dosageTimes: [],
     id: "",
   });
 
@@ -74,7 +76,6 @@ export default function User() {
     setDataList(response.data);
   };
 
-
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(
@@ -92,13 +93,12 @@ export default function User() {
   const handleEdit = async (id) => {
     const editItem = dataList.find((item) => item.id === id);
     if (editItem) {
-      setFormDataEdit({ ...editItem });
+      setFormDataEdit({ ...formDataEdit, ...editItem });
     } else {
       // Handle case where medication is not found (e.g., alert message)
     }
     setEditMedForm(true);
   };
-  
 
   const handleEditSave = async (e) => {
     e.preventDefault();
@@ -120,7 +120,10 @@ export default function User() {
   };
 
   return (
-    <div className="user-container">
+    <div
+      className="user-container"
+      style={{ backgroundImage: `url(${backgroundImg})` }}
+    >
       <button className="btn btn-add" onClick={() => setNewSection(true)}>
         Add New
       </button>
@@ -161,32 +164,36 @@ export default function User() {
             </tr>
           </thead>
           <tbody>
-      {/* Conditionally render medication list and edit buttons */}
-      {dataList.length > 0 && (
-        dataList.map((el) => {
-          return (
-            <tr>
-              <td>{el.medName}</td>
-              <td>{el.startDate}</td>
-              <td>{el.endDate}</td>
-              <td>{el.freq}</td>
-              <td></td>
-              <td>
-                <button className="btn btn-edit" onClick={() => handleEdit(el.id)}>Edit</button>
-                <button
-                  className="btn btn-delete"
-                  onClick={() => handleDelete(el.id)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          );
-        })
-      )}
-      {/* Alternative message if no medication is found */}
-      {dataList.length === 0 && <p className="no-med">No Medication</p>}
-    </tbody>
+            {/* Conditionally render medication list and edit buttons */}
+            {dataList.length > 0 &&
+              dataList.map((el) => {
+                return (
+                  <tr>
+                    <td className="tableData">{el.medName}</td>
+                    <td className="tableData">{el.startDate}</td>
+                    <td className="tableData">{el.endDate}</td>
+                    <td className="tableData">{el.freq}</td>
+                    <td className="tableData"></td>
+                    <td className="tableData">
+                      <button
+                        className="btn btn-edit"
+                        onClick={() => handleEdit(el.id)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-delete"
+                        onClick={() => handleDelete(el.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            {/* Alternative message if no medication is found */}
+            {dataList.length === 0 && <p className="no-med">No Medication</p>}
+          </tbody>
         </table>
       </div>
     </div>

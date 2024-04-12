@@ -1,6 +1,7 @@
 import "./MedFormTable.scss";
 import "../../pages/User/User.scss";
 import { IoIosClose } from "react-icons/io";
+import { useState, useEffect } from "react";
 
 const timeOptions = [];
 for (let hour = 0; hour < 24; hour++) {
@@ -16,7 +17,48 @@ export default function MedFormTable({
   handleOnChange,
   handleClose,
   formData,
+  setFormData,
 }) {
+  const [numTimes, setNumTimes] = useState([]);
+  const [numTimeInputFields, setNumTimeInputFields] = useState([]);
+  console.log(numTimeInputFields);
+  console.log(numTimeInputFields[0]);
+
+  const onChangeTimes = (event) => {
+
+    const myArr = [];
+    for (let x = 0; x < event.target.value || 0; x++) {
+      myArr.push(x);
+    }
+    setNumTimes(myArr || []);
+    handleOnChange(event);
+  };
+
+  useEffect(() => {
+    setNumTimeInputFields(
+      numTimes.map((dosageTime, index) => {
+        console.log(dosageTime);
+        return (
+          <div key={index}>
+            <select
+              className=""
+              name={`dosageTimes[${dosageTime}]`} // Update name based on index
+              defaultValue={formData.dosageTimes[dosageTime] || ""}
+              onChange={handleOnChange}
+            >
+              <option value="">Select Time</option>
+              {timeOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        );
+      })
+    );
+  }, [formData.dosageTimes, handleOnChange, numTimes]);
+
   return (
     <div className="addContainer">
       <form id="medForm" onSubmit={handleSave}>
@@ -31,18 +73,21 @@ export default function MedFormTable({
           placeholder="medication"
           onChange={handleOnChange}
           required
-          value={formData.medName}
+          defaultValue={formData.medName}
         />
         <label htmlFor="freq">Number of times per day: </label>
         <input
           type="number"
           min="0"
+          max="6"
+          minLength={0}
+          maxLength={6}
           id="freq"
           name="freq"
           placeholder="number of times"
-          onChange={handleOnChange}
+          onChange={onChangeTimes}
           required
-          value={formData.freq}
+          defaultValue={formData.freq}
         />
 
         <label htmlFor="startDate">Start Date: </label>
@@ -52,7 +97,7 @@ export default function MedFormTable({
           name="startDate"
           onChange={handleOnChange}
           required
-          value={formData.startDate}
+          defaultValue={formData.startDate}
         />
 
         <label htmlFor="endDate">End Date (Optional): </label>
@@ -61,35 +106,14 @@ export default function MedFormTable({
           id="endDate"
           name="endDate"
           onChange={handleOnChange}
-          value={formData.endDate}
+          defaultValue={formData.endDate}
         />
 
         {formData.freq > 0 && (
           <div>
             <label>Dosage Start Time: </label>
-            {Array(formData.freq)
-              .fill(null)
-              .map((dosageTime, index) => (
-                <div key={index}>
-                  <select
-                    className=""
-                    name={`dosageTimes[${index}]`}
-                    value={formData.dosageTimes[index] || ""}
-                    onChange={handleOnChange}
-                  >
-                    <option value="">Select Time</option>
-                    {timeOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              ))}
-            <div className="interval">
-              <label>Dosage Interval: </label>
-              <input type="text" />
-            </div>
+
+            {numTimeInputFields}
           </div>
         )}
 
