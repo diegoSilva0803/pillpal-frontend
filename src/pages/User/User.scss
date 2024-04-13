@@ -3,14 +3,14 @@
 }
 
 .user-container {
-  padding: 10px;
-  // background-color: lightgray;
-  //   max-width: fit-content;
-  //   margin: 50px auto;
+  padding: 65px;
+  background-color: lightgray;
   width: 100%;
   display: flex;
   flex-direction: column;
   height: 50vw;
+  background-image: url("../../images/pill-bg.jpg");
+  background-position: center;
 }
 
 .btn {
@@ -26,10 +26,6 @@
 }
 
 .btn-add {
-  //   background-color: #003459;
-  //   width: 150px;
-  //   color: white;
-  //   cursor: pointer;
   color: black;
   border: none;
   border-radius: 10px;
@@ -104,7 +100,6 @@
   border-radius: 5px;
   border: 1px solid lightgray;
   width: 100%;
-  //   background-color: red;
   & table {
     border-radius: 5px;
     width: 100%;
@@ -133,7 +128,6 @@
 
 .form-btn {
   display: flex;
-  // flex-direction: column;
   align-items: center;
   justify-content: space-between;
 }
@@ -174,4 +168,21 @@ select {
 .interval {
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  table {
+    display: flex;
+  }
+
+  .tableContainer table td {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tableContainer table th {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid black;
+  }
 }
