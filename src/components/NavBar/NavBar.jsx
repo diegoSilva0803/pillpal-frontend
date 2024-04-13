@@ -19,7 +19,7 @@ export default function NavBar() {
         </Link>
         <div className="hiddenLinks">
           <Link to="/home">Home</Link>
-          <Link to="/user">My Meds</Link>
+          <Link to="/user">MyMeds</Link>
           <Link to="/signIn">Sign Out</Link>
         </div>
       </div>

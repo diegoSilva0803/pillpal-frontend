@@ -1,27 +1,31 @@
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.scss";
 import Home from "./pages/Home/Home";
-import SignUp from "./pages/SignUp/SignUp";
+import Register from "./pages/Register/Register";
 import User from "./pages/User/User";
-import NavBar from "./components/NavBar/NavBar";
-import Footer from "./components/Footer/Footer";
+import SignIn from "./pages/SignIn/SignIn";
+import MainLayout from "./components/MainLayout/MainLayout";
+import AuthLayout from "./components/AuthLayout/AuthLayout";
 
 function App() {
-  
-
   return (
     <>
-    <BrowserRouter>
-    <NavBar />   
-    <Routes>
-        <Route path="/home" element={<Home />}/>
-        <Route path="/signup" element={<SignUp />}/>
-        <Route path="/user" element={<User />}/>  
-    </Routes>
-    <Footer />
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/user" element={<User />} />
+          </Route>
+          <Route element={<AuthLayout />}>
+            <Route path="/register" element={<Register />} />
+            <Route path="/signin" element={<SignIn />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
 
 export default App;
+

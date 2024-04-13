@@ -31,19 +31,14 @@
   color: white;
   text-decoration: none;
   margin: 20px;
-  font-size: 1.4rem;
-//   &:hover {
-//     color: rgb(188, 170, 196);
-//     padding-bottom: 5px;
-//     border-bottom: 2px solid rgb(188, 170, 196);
-//   }
+  font-size: 1.2rem;
+  
 }
 
 .navbar .hiddenLinks,
 .navbar .rightSide a:hover {
-  color: rgb(188, 170, 196);
+  color: crimson;
   padding-bottom: 5px;
-  border-bottom: 2px solid rgb(188, 170, 196);
 }
 
 .navbar .rightSide button {

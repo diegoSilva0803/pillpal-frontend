@@ -138,16 +138,16 @@ export default function User() {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const { medName, freq, startDate, endDate = "" } = formData;
+    const { medName, freq, startDate, endDate, dosageTimes = "" } = formData;
     const data = await axios.post(
       "http://localhost:8080/medication/create",
       //   formData
-      { medName, freq, startDate, endDate }
+      { medName, freq, startDate, endDate, dosageTimes }
     );
     getData();
     setNewSection(false);
     // setMedicationSavedAlertSection(true);
-    // console.log(data);
+    console.log(data);
   };
 
   const getData = async () => {
@@ -247,7 +247,6 @@ export default function User() {
               <th>Start Date</th>
               <th>End Date</th>
               <th>Frequency</th>
-              {/* <th>Dosage Time</th> */}
               <th>Manage</th>
             </tr>
           </thead>
@@ -260,6 +259,8 @@ export default function User() {
                     <td className="tableData">{el.startDate}</td>
                     <td className="tableData">{el.endDate}</td>
                     <td className="tableData">{el.freq}</td>
+                    
+                    
 
                     <td className="tableData">
                       <button
