@@ -262,7 +262,7 @@ export default function User() {
                     
                     
 
-                    <td className="tableData">
+                    <td className="tableData buttons">
                       <button
                         className="btn btn-edit"
                         onClick={() => handleEditClick(el.id)}
