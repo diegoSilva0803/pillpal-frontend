@@ -1,0 +1,235 @@
+* {
+  box-sizing: border-box;
+}
+
+.user-container {
+  padding: 65px;
+  background-color: lightgray;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-image: url("../../images/pill-bg.jpg");
+  background-position: center;
+}
+
+.btn {
+  border: none;
+  padding: 8px 15px;
+  font-size: 18px;
+  border-radius: 5px;
+}
+
+.tableData {
+  background-color: #003459;
+  color: white;
+}
+
+.btn-add {
+  color: black;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  justify-content: center;
+  background-color: #121619;
+  height: 50px;
+  width: 180px;
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  &:hover {
+    background-color: lightgray;
+    color: black;
+    cursor: pointer;
+    transition: 0.3s ease-in;
+  }
+}
+
+.addContainer {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.2);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & form {
+    width: 440px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 50px 30px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    & label {
+      font-size: 18px;
+    }
+    & input {
+      font-size: 18px;
+      padding: 5px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    & button {
+      background-color: royalblue;
+      color: white;
+      font-weight: 500;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    & .close-btn {
+      margin-left: auto;
+      font-size: 30px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border-radius: 10px;
+      border: 1px solid black;
+    }
+  }
+}
+
+.tableContainer {
+    overflow: auto;
+
+
+  margin-top: 50px;
+  box-shadow: 5px 5px 10px rbga(0, 0, 0, 0.2);
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  width: 100%;
+  & table {
+    border-radius: 5px;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  & table thead tr {
+    background-color: lightgray;
+
+    & th {
+      min-width: 200px;
+      padding: 8px;
+    }
+  }
+  & table tbody tr td,
+  table tbody tr th {
+    min-width: 200px;
+    padding: 8px;
+    text-align: center;
+  }
+  & table tbody tr td {
+    border-bottom: 1px solid lightgray;
+  }
+  & table tbody tr {
+    border: 1px solid black;
+  }
+}
+
+.form-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-edit,
+.btn-delete {
+  font-size: 1rem;
+  padding: 5px 10px;
+  margin: 0px 10px;
+}
+
+.btn-edit {
+  background-color: royalblue;
+  color: white;
+}
+
+.btn-delete {
+  background-color: crimson;
+  color: white;
+}
+
+.no-med {
+  text-align: center;
+  font-weight: 600;
+  font-size: 2rem;
+  width: 100%;
+  color: white;
+}
+
+select {
+  font-size: 18px;
+  padding: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: auto;
+}
+
+.interval {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 320px) {
+
+    /* User container padding adjustment for smaller screens */
+    .user-container {
+      padding: 2rem;
+    }
+  
+    /* Table container adjustments */
+    .tableContainer {
+      height: 40vh; /* Set a fixed height for smaller screens */
+      width: 100%;
+      flex-wrap: wrap; /* Allow table content to wrap on smaller screens */
+      &::-webkit-scrollbar {
+        width: 8px; /* Adjust width as desired */
+      }
+    
+      &::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+      }
+    
+      &::-webkit-scrollbar-thumb {
+        background-color: #ddd;
+        border-radius: 5px;
+      }
+    
+      &::-webkit-scrollbar-thumb:hover {
+        background-color: #bbb;
+      }
+    }
+  
+    /* Reduce table font size for better readability */
+    table {
+      font-size: 0.8rem;
+      overflow-x: auto; /* Enable horizontal scrolling if content overflows */
+      display: flex; /* Not necessary for most table layouts */
+    }
+  
+    /* Table data cells (including headers) */
+    .tableContainer table td,
+    .tableContainer table th {
+      display: flex; /* Not necessary for most table layouts */
+      flex-direction: column; /* Not necessary for most table layouts */
+      white-space: nowrap; /* Prevent wrapping of cell content */
+      overflow: hidden; /* Hide overflowing content */
+      text-overflow: ellipsis; /* Add ellipsis for truncated content */
+      max-width: [desired width]; /* Set a desired max-width for cells */
+    }
+  
+    /* Remove unnecessary styles for smaller screens */
+    .tableContainer table th {
+      border-bottom: none; /* Remove bottom border for a cleaner look */
+    }
+  
+    /* You can add additional styles here for buttons or other elements within the table on smaller screens */
+    .tableData .buttons {
+      display: flex;
+      flex-direction: column; /* Stack buttons vertically on small screens */
+    }
+  }
